@@ -51,9 +51,7 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
                 SqlProperty.get(entityProperty + ".saveNew") : SqlProperty.get(entityProperty + ".save");
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             fillEntity(preparedStatement, element);
-            if (preparedStatement.executeUpdate() != 1) {
-                logger.error("Save error: incorrect updated fields number");
-            }
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Save error", e);
         }
@@ -69,9 +67,7 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
         String query = StringUtils.replace(property, "$field", field);
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, index);
-            if (preparedStatement.executeUpdate() != 1) {
-                logger.error("DeleteByField error: incorrect updated fields number");
-            }
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("DeleteByField error", e);
         }
@@ -122,8 +118,7 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
 
     private void fillEntity(PreparedStatement preparedStatement, Entity entity) throws SQLException {
         List<Object> entityParams = getEntityParams(entity);
-        boolean isNew = (entity.getId() == null);
-        int offset = (isNew ? 1 : 0);
+        int offset = (entity.getId() == null ? 1 : 0);
         for (int i = 0; i < entityParams.size() - offset; i++) {
             preparedStatement.setObject(i + 1, entityParams.get(i + offset));
         }
