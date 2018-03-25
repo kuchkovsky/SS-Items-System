@@ -17,8 +17,8 @@
         <c:if test="${not empty fullUserName}">
             <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="${PagePaths.USER_ACCOUNT}"><i class="material-icons left">account_circle</i>${fullUserName}</a></li>
                 <li><a href="${PagePaths.USER_ITEMS}"><i class="material-icons left">list</i>Items</a></li>
+                <li><a href="${PagePaths.USER_ACCOUNT}"><i class="material-icons left">account_circle</i>${fullUserName}</a></li>
                 <li><a href="${PagePaths.LOGOUT}"><i class="material-icons left">exit_to_app</i>Logout</a></li>
             </ul>
         </c:if>
@@ -26,8 +26,8 @@
 </nav>
 <c:if test="${not empty fullUserName}">
     <ul class="sidenav" id="mobile-sidenav">
-        <li><a href="${PagePaths.USER_ACCOUNT}"><i class="material-icons left">account_circle</i>${fullUserName}</a></li>
         <li><a href="${PagePaths.USER_ITEMS}"><i class="material-icons left">list</i>Items</a></li>
+        <li><a href="${PagePaths.USER_ACCOUNT}"><i class="material-icons left">account_circle</i>${fullUserName}</a></li>
         <li><a href="${PagePaths.LOGOUT}"><i class="material-icons left">exit_to_app</i>Logout</a></li>
     </ul>
 </c:if>
