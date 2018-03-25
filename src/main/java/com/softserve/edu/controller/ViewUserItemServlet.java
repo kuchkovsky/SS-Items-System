@@ -3,8 +3,9 @@ package com.softserve.edu.controller;
 import com.softserve.edu.constant.Attributes;
 import com.softserve.edu.constant.JspPaths;
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.exception.AuthorizationException;
+import com.softserve.edu.exception.AccessViolationException;
 import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.ResourceNotFoundException;
 import com.softserve.edu.service.UserItemsService;
 import com.softserve.edu.util.ApplicationContext;
 
@@ -24,11 +25,12 @@ public class ViewUserItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromPath(request));
+            request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromUrl(request));
             getServletContext().getRequestDispatcher(JspPaths.VIEW_USER_ITEM).forward(request, response);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (AuthorizationException e) {
+        } catch (IncorrectParametersException | ResourceNotFoundException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+        } catch (AccessViolationException e) {
             response.sendRedirect(PagePaths.LOGIN);
         }
     }

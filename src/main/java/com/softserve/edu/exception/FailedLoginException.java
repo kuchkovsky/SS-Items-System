@@ -1,6 +1,6 @@
 package com.softserve.edu.exception;
 
-public class FailedLoginException extends Exception {
+public class FailedLoginException extends ServiceException {
 
     public FailedLoginException() {}
 

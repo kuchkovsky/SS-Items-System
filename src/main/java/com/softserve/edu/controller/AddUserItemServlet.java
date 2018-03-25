@@ -4,7 +4,7 @@ import com.softserve.edu.constant.AttributeValues;
 import com.softserve.edu.constant.Attributes;
 import com.softserve.edu.constant.JspPaths;
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.service.UserItemsService;
 import com.softserve.edu.util.ApplicationContext;
 
@@ -33,8 +33,9 @@ public class AddUserItemServlet extends HttpServlet {
         try {
             userItemsService.createUserItem(request);
             response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.ADD_USER_ITEM);
+        } catch (EmptyFieldsException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         }
     }
 

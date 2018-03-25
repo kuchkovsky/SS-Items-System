@@ -1,5 +1,7 @@
 package com.softserve.edu.entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class UserEntity extends IndexedEntity<Long> {
 
     private Long id;
@@ -62,6 +64,11 @@ public class UserEntity extends IndexedEntity<Long> {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean hasEmptyFields() {
+        return StringUtils.isEmpty(getLogin()) || StringUtils.isEmpty(getPassword())
+                || StringUtils.isEmpty(getFirstName()) || StringUtils.isEmpty(getLastName());
     }
 
     @Override

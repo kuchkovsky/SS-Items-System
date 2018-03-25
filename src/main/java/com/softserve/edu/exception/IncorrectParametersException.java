@@ -1,6 +1,6 @@
 package com.softserve.edu.exception;
 
-public class IncorrectParametersException extends Exception {
+public class IncorrectParametersException extends ServiceException {
 
     public IncorrectParametersException() {}
 

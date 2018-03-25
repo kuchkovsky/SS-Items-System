@@ -3,7 +3,7 @@ package com.softserve.edu.controller;
 import com.softserve.edu.constant.Attributes;
 import com.softserve.edu.constant.JspPaths;
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.exception.FailedLoginException;
 import com.softserve.edu.service.LoginService;
 import com.softserve.edu.util.ApplicationContext;
@@ -32,8 +32,9 @@ public class LoginServlet extends HttpServlet {
         try {
             loginService.loginUser(request);
             response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.LOGIN);
+        } catch (EmptyFieldsException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         } catch (FailedLoginException e) {
             request.setAttribute(Attributes.ERROR, e);
             request.getRequestDispatcher(JspPaths.LOGIN).forward(request, response);

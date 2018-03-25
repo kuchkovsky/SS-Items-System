@@ -4,8 +4,7 @@ import com.softserve.edu.constant.AttributeValues;
 import com.softserve.edu.constant.Attributes;
 import com.softserve.edu.constant.JspPaths;
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.exception.AuthorizationException;
-import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.ServiceException;
 import com.softserve.edu.service.UserItemsService;
 import com.softserve.edu.util.ApplicationContext;
 
@@ -26,12 +25,11 @@ public class EditUserItemServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setAttribute(Attributes.PAGE_TITLE, AttributeValues.EDIT_ITEM_PAGE);
         try {
-            request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromParameter(request));
+            request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromUrlParameter(request));
             getServletContext().getRequestDispatcher(JspPaths.EDIT_USER_ITEM).forward(request, response);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (AuthorizationException e) {
-            response.sendRedirect(PagePaths.LOGIN);
+        } catch (ServiceException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         }
     }
 
@@ -41,10 +39,9 @@ public class EditUserItemServlet extends HttpServlet {
         try {
             userItemsService.editUserItem(request);
             response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.ADD_USER_ITEM);
-        } catch (AuthorizationException e) {
-            response.sendRedirect(PagePaths.LOGIN);
+        } catch (ServiceException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         }
     }
 

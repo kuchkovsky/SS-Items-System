@@ -1,9 +1,10 @@
 package com.softserve.edu.service;
 
 import com.softserve.edu.constant.Attributes;
+import com.softserve.edu.constant.FormParameters;
 import com.softserve.edu.dao.UserDao;
 import com.softserve.edu.entity.UserEntity;
-import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.exception.FailedLoginException;
 import org.apache.commons.lang3.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
@@ -15,21 +16,24 @@ public class LoginService {
 
     public static final int SESSION_TIMEOUT_IN_DAYS = 3;
 
+    public static final String EMPTY_LOGIN_FIELDS_MESSAGE = "Incorrect login parameters. Fields can't be empty";
+    public static final String LOGIN_FAILED_MESSAGE = "Incorrect login or password. Please try again";
+
     private UserDao userDao;
 
     public LoginService(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public void loginUser(HttpServletRequest request) throws IncorrectParametersException, FailedLoginException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+    public void loginUser(HttpServletRequest request) throws EmptyFieldsException, FailedLoginException {
+        String login = request.getParameter(FormParameters.LOGIN);
+        String password = request.getParameter(FormParameters.PASSWORD);
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(password)) {
-            throw new IncorrectParametersException();
+            throw new EmptyFieldsException(EMPTY_LOGIN_FIELDS_MESSAGE);
         }
         UserEntity user = userDao.findByLogin(login);
         if (user == null || !BCrypt.checkpw(password, user.getPassword())) {
-            throw new FailedLoginException("Incorrect login or password. Please try again");
+            throw new FailedLoginException(LOGIN_FAILED_MESSAGE);
         }
         logout(request);
         HttpSession session = request.getSession(true);

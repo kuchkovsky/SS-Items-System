@@ -4,10 +4,7 @@ import com.softserve.edu.constant.AttributeValues;
 import com.softserve.edu.constant.Attributes;
 import com.softserve.edu.constant.JspPaths;
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.exception.IncorrectParametersException;
-import com.softserve.edu.exception.PasswordsDontMatchException;
-import com.softserve.edu.exception.UserAlreadyExistsException;
-import com.softserve.edu.exception.FailedLoginException;
+import com.softserve.edu.exception.*;
 import com.softserve.edu.service.LoginService;
 import com.softserve.edu.service.UserService;
 import com.softserve.edu.util.ApplicationContext;
@@ -39,8 +36,9 @@ public class SignupServlet extends HttpServlet {
             userService.createUser(request);
             loginService.loginUser(request);
             response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.SIGNUP);
+        } catch (EmptyFieldsException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         } catch (UserAlreadyExistsException | PasswordsDontMatchException e) {
             request.setAttribute(Attributes.ERROR, e);
             doGet(request, response);

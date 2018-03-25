@@ -4,7 +4,7 @@ import com.softserve.edu.constant.AttributeValues;
 import com.softserve.edu.constant.Attributes;
 import com.softserve.edu.constant.JspPaths;
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.exception.PasswordsDontMatchException;
 import com.softserve.edu.service.UserService;
 import com.softserve.edu.util.ApplicationContext;
@@ -37,8 +37,9 @@ public class UserAccountServlet extends HttpServlet {
         try {
             userService.editUser(request);
             response.sendRedirect(PagePaths.USER_ITEMS);
-        } catch (IncorrectParametersException e) {
-            response.sendRedirect(PagePaths.USER_ACCOUNT);
+        } catch (EmptyFieldsException e) {
+            request.setAttribute(Attributes.ERROR, e);
+            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         } catch (PasswordsDontMatchException e) {
             request.setAttribute(Attributes.ERROR, e);
             doGet(request, response);

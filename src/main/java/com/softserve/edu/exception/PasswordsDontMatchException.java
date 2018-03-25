@@ -1,6 +1,6 @@
 package com.softserve.edu.exception;
 
-public class PasswordsDontMatchException extends Exception {
+public class PasswordsDontMatchException extends ServiceException {
 
     public PasswordsDontMatchException() {}
 

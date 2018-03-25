@@ -1,12 +1,15 @@
 package com.softserve.edu.service;
 
+import com.softserve.edu.constant.FormParameters;
+import com.softserve.edu.constant.UrlParameters;
 import com.softserve.edu.dao.UserItemDao;
 import com.softserve.edu.dto.UserItemDto;
 import com.softserve.edu.entity.UserItemEntity;
-import com.softserve.edu.exception.AuthorizationException;
+import com.softserve.edu.exception.AccessViolationException;
+import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.exception.IncorrectParametersException;
+import com.softserve.edu.exception.ResourceNotFoundException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -14,7 +17,10 @@ import java.util.List;
 
 public class UserItemsService {
 
-    private static final Logger logger = Logger.getLogger(UserItemsService.class);
+    public static final String INCORRECT_ID_FORMAT_MESSAGE = "Incorrect ID format";
+    public static final String ITEM_NOT_FOUND_MESSAGE = "Could not find requested item";
+    public static final String ACCESS_VIOLATION_MESSAGE = "Access Denied. You don't have permission to view this page";
+    public static final String EMPTY_ITEM_FIELDS_MESSAGE = "Incorrect item parameters. Fields can't be empty";
 
     private UserItemDao userItemDao;
 
@@ -29,51 +35,59 @@ public class UserItemsService {
         return userItemDtos;
     }
 
-    public UserItemDto getUserItemFromParameter(HttpServletRequest request)
-            throws IncorrectParametersException, AuthorizationException{
-        return new UserItemDto(userItemDao.findById(secureGetUserItemId(request.getParameter("id"), request)));
+    public UserItemDto getUserItemFromUrlParameter(HttpServletRequest request)
+            throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException {
+        Long id = verifyAndGetUserItemId(request.getParameter(UrlParameters.ID), LoginService.getLoggedUserId(request));
+        return new UserItemDto(userItemDao.findById(id));
     }
 
-    public UserItemDto getUserItemFromPath(HttpServletRequest request)
-            throws IncorrectParametersException, AuthorizationException{
-        String itemId = StringUtils.replace(request.getPathInfo(), "/", "");
-        return new UserItemDto(userItemDao.findById(secureGetUserItemId(itemId, request)));
+    public UserItemDto getUserItemFromUrl(HttpServletRequest request)
+            throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException {
+        String itemIdString = StringUtils.replace(request.getPathInfo(), "/", "");
+        Long itemId = verifyAndGetUserItemId(itemIdString, LoginService.getLoggedUserId(request));
+        return new UserItemDto(userItemDao.findById(itemId));
     }
 
-    public void createUserItem(HttpServletRequest request) throws IncorrectParametersException {
-        saveUserEntity(null, request);
+    public void createUserItem(HttpServletRequest request) throws EmptyFieldsException {
+        saveUserItem(null, request);
     }
 
-    public void editUserItem(HttpServletRequest request) throws IncorrectParametersException, AuthorizationException {
-        Long userItemId = secureGetUserItemId(request.getParameter("itemId"), request);
-        saveUserEntity(userItemId, request);
+    public void editUserItem(HttpServletRequest request)
+            throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException, EmptyFieldsException {
+        Long id = verifyAndGetUserItemId(request.getParameter(FormParameters.ID), LoginService.getLoggedUserId(request));
+        saveUserItem(id, request);
     }
 
-    public void deleteUserItem(HttpServletRequest request) throws IncorrectParametersException, AuthorizationException {
-        userItemDao.deleteById(secureGetUserItemId(request.getParameter("itemId"), request));
+    public void deleteUserItem(HttpServletRequest request)
+            throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException {
+        Long id = verifyAndGetUserItemId(request.getParameter(UrlParameters.ID), LoginService.getLoggedUserId(request));
+        userItemDao.deleteById(id);
     }
 
-    private Long secureGetUserItemId(String itemIdString, HttpServletRequest request)
-            throws IncorrectParametersException, AuthorizationException{
+    private Long verifyAndGetUserItemId(String itemIdString, Long loggedUserId)
+            throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException {
         Long itemId;
         try {
             itemId = Long.parseLong(itemIdString);
         } catch (NumberFormatException e) {
-            logger.error(e);
-            throw new IncorrectParametersException();
+            throw new IncorrectParametersException(INCORRECT_ID_FORMAT_MESSAGE);
         }
-        if (!LoginService.getLoggedUserId(request).equals(userItemDao.findById(itemId).getUserId())) {
-            throw new AuthorizationException();
+        UserItemEntity userItemEntity = userItemDao.findById(itemId);
+        if (userItemEntity == null) {
+            throw new ResourceNotFoundException(ITEM_NOT_FOUND_MESSAGE);
+        }
+        if (!userItemEntity.getUserId().equals(loggedUserId)) {
+            throw new AccessViolationException(ACCESS_VIOLATION_MESSAGE);
         }
         return itemId;
     }
 
-    private void saveUserEntity(Long userItemId, HttpServletRequest request)
-            throws IncorrectParametersException {
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
+    private void saveUserItem(Long userItemId, HttpServletRequest request)
+            throws EmptyFieldsException {
+        String title = request.getParameter(FormParameters.TITLE);
+        String description = request.getParameter(FormParameters.DESCRIPTION);
         if (StringUtils.isEmpty(title) || StringUtils.isEmpty(title)) {
-            throw new IncorrectParametersException();
+            throw new EmptyFieldsException(EMPTY_ITEM_FIELDS_MESSAGE);
         }
         Long userId = LoginService.getLoggedUserId(request);
         userItemDao.save(new UserItemEntity(userItemId, title, description, userId));

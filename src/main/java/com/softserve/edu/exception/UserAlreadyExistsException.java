@@ -1,6 +1,6 @@
 package com.softserve.edu.exception;
 
-public class UserAlreadyExistsException extends Exception {
+public class UserAlreadyExistsException extends ServiceException {
 
     public UserAlreadyExistsException() {}
 
