@@ -2,7 +2,8 @@ package com.softserve.edu.dao;
 
 import com.softserve.edu.db.ConnectionManager;
 import com.softserve.edu.entity.IndexedEntity;
-import com.softserve.edu.util.SqlProperty;
+import com.softserve.edu.util.ApplicationContext;
+import com.softserve.edu.util.SqlPropertyReader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -14,8 +15,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
         implements CrudDao<Entity, Index> {
 
     private static final Logger logger = Logger.getLogger(AbstractCrudDao.class);
-
     private static final ConnectionManager connectionManager = ConnectionManager.getInstance();
+    private static final SqlPropertyReader sqlProperty = ApplicationContext.getInstance().getSqlPropertyReader();
 
     private String entityProperty;
 
@@ -26,13 +27,13 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
 
     @Override
     public Entity findById(Index id) {
-        return findByField(id, "id");
+        return findOneByField(id, "id");
     }
 
     @Override
     public List<Entity> findAll() {
         try (Statement statement = connectionManager.getConnection().createStatement()) {
-            String query = SqlProperty.get(entityProperty + ".findAll");
+            String query = sqlProperty.get(entityProperty + ".findAll");
             ResultSet resultSet = statement.executeQuery(query);
             List<Entity> entities = new ArrayList<>();
             while (resultSet.next()) {
@@ -40,7 +41,7 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
             }
             return entities;
         } catch (SQLException e) {
-            logger.error("FindAll error", e);
+            logger.error("DAO: findAll error", e);
             return null;
         }
     }
@@ -48,12 +49,12 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     @Override
     public void save(Entity element) {
         String query = (element.getId() == null) ?
-                SqlProperty.get(entityProperty + ".saveNew") : SqlProperty.get(entityProperty + ".save");
+                sqlProperty.get(entityProperty + ".saveNew") : sqlProperty.get(entityProperty + ".save");
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             fillEntity(preparedStatement, element);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Save error", e);
+            logger.error("DAO: save error", e);
         }
     }
 
@@ -63,13 +64,13 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     }
 
     protected void deleteByField(Number index, String field) {
-        String property = SqlProperty.get(entityProperty + ".deleteByField");
+        String property = sqlProperty.get(entityProperty + ".deleteByField");
         String query = StringUtils.replace(property, "$field", field);
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, index);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("DeleteByField error", e);
+            logger.error("DAO: deleteByField error", e);
         }
     }
 
@@ -81,24 +82,34 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     @Override
     public void deleteAll() {
         try (Statement statement = connectionManager.getConnection().createStatement()) {
-            String query = SqlProperty.get(entityProperty + ".deleteAll");
+            String query = sqlProperty.get(entityProperty + ".deleteAll");
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            logger.error("DeleteAll error", e);
+            logger.error("DAO: deleteAll error", e);
         }
     }
 
-    protected Entity findByField(Object object, String field) {
-        String property = SqlProperty.get(entityProperty + ".findByField");
+    protected Entity findOneByField(Object object, String field) {
+        List<Entity> entities = findAllByField(object, field);
+        if (entities.size() == 0) {
+            return null;
+        }
+        return entities.get(0);
+    }
+
+    protected List<Entity> findAllByField(Object object, String field) {
+        String property = sqlProperty.get(entityProperty + ".findByField");
         String query = StringUtils.replace(property, "$field", field);
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, object);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return createEntity(resultSet);
+            List<Entity> entities = new ArrayList<>();
+            while (resultSet.next()) {
+                entities.add(createEntity(resultSet));
             }
+            return entities;
         } catch (SQLException e) {
-            logger.error("FindByField error", e);
+            logger.error("DAO: findByField error", e);
         }
         return null;
     }
@@ -109,18 +120,20 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
 
     private void createTableIfNotExists() {
         try (Statement statement = connectionManager.getConnection().createStatement()) {
-            String query = SqlProperty.get(entityProperty + ".createTableIfNotExists");
+            String query = sqlProperty.get(entityProperty + ".createTableIfNotExists");
             statement.execute(query);
         } catch (SQLException e) {
-            logger.error("CreateTableIfNotExists error", e);
+            logger.error("DAO: createTableIfNotExists error", e);
         }
     }
 
     private void fillEntity(PreparedStatement preparedStatement, Entity entity) throws SQLException {
         List<Object> entityParams = getEntityParams(entity);
-        int offset = (entity.getId() == null ? 1 : 0);
-        for (int i = 0; i < entityParams.size() - offset; i++) {
-            preparedStatement.setObject(i + 1, entityParams.get(i + offset));
+        for (int i = 1; i < entityParams.size(); i++) {
+            preparedStatement.setObject(i, entityParams.get(i));
+        }
+        if (entity.getId() != null) {
+            preparedStatement.setObject(entityParams.size(), entityParams.get(0));
         }
     }
 

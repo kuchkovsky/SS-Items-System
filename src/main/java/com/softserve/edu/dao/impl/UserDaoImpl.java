@@ -14,7 +14,6 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity, Long> implements Us
         super("user");
     }
 
-
     @Override
     protected UserEntity createEntity(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getLong("id");
@@ -24,7 +23,6 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity, Long> implements Us
         String lastName = resultSet.getString("last_name");
         return new UserEntity(id, login, password, firstName, lastName);
     }
-
 
     @Override
     protected List<Object> getEntityParams(UserEntity userEntity) {
@@ -39,7 +37,7 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity, Long> implements Us
 
     @Override
     public UserEntity findByLogin(String login) {
-        return findByField(login, "login");
+        return findOneByField(login, "login");
     }
 
 }

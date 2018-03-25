@@ -1,20 +1,23 @@
 package com.softserve.edu.db;
 
+import com.softserve.edu.util.ApplicationContext;
+import com.softserve.edu.util.JdbcPropertyReader;
+
 public final class DataSourceRepository {
 
-    public static final String MARIADB_URL = "jdbc:mysql://localhost:3306/product_system";
-    public static final String MARIADB_USER = "product_admin";
-    public static final String MARIADB_PASSWORD = "pass12345";
+    private static final JdbcPropertyReader jdbcProperty = ApplicationContext.getInstance().getJdbcPropertyReader();
 
-    private DataSourceRepository() {
-    }
+    private DataSourceRepository() {}
 
     public static DataSource getDefault() {
         return getMariaDbLocalHost();
     }
 
     public static DataSource getMariaDbLocalHost() {
-        return new DataSource(new org.mariadb.jdbc.Driver(), MARIADB_URL, MARIADB_USER, MARIADB_PASSWORD);
+        String url = jdbcProperty.get("mariadb.url");
+        String user = jdbcProperty.get("mariadb.user");
+        String password = jdbcProperty.get("mariadb.password");
+        return new DataSource(new org.mariadb.jdbc.Driver(), url, user, password);
     }
 
 }

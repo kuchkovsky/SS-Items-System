@@ -1,0 +1,70 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+    padding: 10px;
+}
+
+.form-block {
+    max-width: 400px;
+}
+
+.form-block button, .form-block a {
+    width: 100%;
+}
+
+#error-block {
+    color: red;
+    margin-bottom: 30px;
+}
+
+.item-list {
+    max-width: 700px;
+}
+
+.edit-button {
+    margin-right: 10px;
+}
+
+@media only screen and (min-width: 751px) {
+    .list-buttons {
+        position: absolute;
+        top: 16px;
+        right: 16px
+    }
+}
+
+#confirmation-dialog {
+    max-width: 650px;
+}
+
+#error-dialog {
+    max-width: 400px;
+}
+
+.collection-item > a {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+#item-text-block {
+    word-break: break-all;
+}
+
+.fixed-action-btn {
+    right: 32px;
+    bottom: 32px;
+}
+
+.sidenav {
+    max-width: 80%;
+}
+
+.sidenav-trigger {
+    margin-left: 0 !important;
+}

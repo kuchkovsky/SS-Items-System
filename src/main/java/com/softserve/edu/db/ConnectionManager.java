@@ -11,10 +11,11 @@ public class ConnectionManager {
     private final static String FAILED_CREATE_CONNECTION = "Failed to Create Connection";
     private final static String FAILED_CLOSE_CONNECTION = "Failed to Close Connection";
 
-
-    private static volatile ConnectionManager instance = null;
+    private static volatile ConnectionManager instance;
     private DataSource dataSource;
     private final HashMap<Long, Connection> connections = new HashMap<>();
+
+    private ConnectionManager() {}
 
     public static ConnectionManager getInstance() {
         return getInstance(null);

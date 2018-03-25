@@ -17,7 +17,6 @@ public final class DataSource {
         this.password = password;
     }
 
-
     public void setJdbcDriver(Driver jdbcDriver) {
         this.jdbcDriver = jdbcDriver;
     }

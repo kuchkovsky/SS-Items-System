@@ -1,19 +1,19 @@
 package com.softserve.edu.entity;
 
-public class ItemEntity extends IndexedEntity<Long> {
+public class UserItemEntity extends IndexedEntity<Long> {
 
     private Long id;
     private String title;
     private String description;
     private Long userId;
 
-    public ItemEntity(String title, String description, Long userId) {
+    public UserItemEntity(String title, String description, Long userId) {
         this.title = title;
         this.description = description;
         this.userId = userId;
     }
 
-    public ItemEntity(Long id, String title, String description, Long userId) {
+    public UserItemEntity(Long id, String title, String description, Long userId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -54,7 +54,7 @@ public class ItemEntity extends IndexedEntity<Long> {
 
     @Override
     public String toString() {
-        return "ItemEntity{" +
+        return "UserItemEntity{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
