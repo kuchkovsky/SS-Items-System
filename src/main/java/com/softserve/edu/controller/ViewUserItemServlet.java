@@ -27,11 +27,9 @@ public class ViewUserItemServlet extends HttpServlet {
         try {
             request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromUrl(request));
             getServletContext().getRequestDispatcher(JspPaths.VIEW_USER_ITEM).forward(request, response);
-        } catch (IncorrectParametersException | ResourceNotFoundException e) {
+        } catch (IncorrectParametersException | ResourceNotFoundException | AccessViolationException e) {
             request.setAttribute(Attributes.ERROR, e);
             getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
-        } catch (AccessViolationException e) {
-            response.sendRedirect(PagePaths.LOGIN);
         }
     }
 
