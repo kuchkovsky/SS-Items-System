@@ -2,6 +2,9 @@ package com.softserve.edu.constant;
 
 public class PagePaths {
 
+    public static final String ROOT = "/";
+    public static final String ROOT_SERVLET = "";
+    public static final String ALL_PAGES = "/*";
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/user/logout";
     public static final String SIGNUP = "/signup";

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.softserve.edu.constant.PagePaths" %>
+<%@ page import="com.softserve.edu.constant.FormParameters" %>
 <c:set var="pageTitle" value="Login" scope="request"/>
 <c:import url="/WEB-INF/page-parts/top.jsp" charEncoding="utf-8"/>
 <main>
@@ -13,12 +14,13 @@
                     </div>
                 </c:if>
                 <div class="input-field col s12">
-                    <input name="login" id="login" type="text" class="validate" required>
-                    <label for="login">Login</label>
+                    <input name="${FormParameters.LOGIN}" id="${FormParameters.LOGIN}" type="text" class="validate" required>
+                    <label for="${FormParameters.LOGIN}">Login</label>
                 </div>
                 <div class="input-field col s12">
-                    <input name="password" id="password" type="password" class="validate" required>
-                    <label for="password">Password</label>
+                    <input name="${FormParameters.PASSWORD}" id="${FormParameters.PASSWORD}" type="password"
+                           class="validate" required>
+                    <label for="${FormParameters.PASSWORD}">Password</label>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit" name="submit">Submit
                     <i class="material-icons right">send</i>
@@ -28,7 +30,7 @@
             <br>
             <h5 class="center">Don't Have an Account?</h5>
             <br>
-            <a href="/signup" class="btn waves-effect waves-light">Sign Up</a>
+            <a href="${PagePaths.SIGNUP}" class="btn waves-effect waves-light">Sign Up</a>
         </div>
     </div>
 </main>

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="com.softserve.edu.constant.PagePaths" %>
+<%@ page import="com.softserve.edu.constant.UrlParameters" %>
 <c:set var="pageTitle" value="User Items" scope="request"/>
 <c:import url="/WEB-INF/page-parts/top.jsp" charEncoding="utf-8"/>
 <main>
@@ -23,7 +24,7 @@
                                 </p>
                             </a>
                             <div class="list-buttons">
-                                <a href="${PagePaths.EDIT_USER_ITEM}?id=${item.id}"
+                                <a href="${PagePaths.EDIT_USER_ITEM}?${UrlParameters.ID}=${item.id}"
                                    class="btn waves-effect waves-light edit-button">Edit</a>
                                 <button class="btn waves-effect waves-light delete-button modal-trigger"
                                         data-target="confirmation-dialog" data-id="${item.id}">Delete</button>

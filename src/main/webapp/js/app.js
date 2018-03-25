@@ -9,7 +9,7 @@ $(".delete-button").click(function(e) {
 $(".modal-delete").click(function() {
     $.ajax({
         type: "DELETE",
-        url: "/user/items?" + $.param({"itemId": $(this).attr('data-id')}),
+        url: "/user/items?" + $.param({"id": $(this).attr('data-id')}),
         success: function() {
             window.setTimeout(function () {
                 location.reload();

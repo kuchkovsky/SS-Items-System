@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.softserve.edu.constant.PagePaths" %>
 <c:set var="pageTitle" value="View Item" scope="request"/>
 <c:import url="/WEB-INF/page-parts/top.jsp" charEncoding="utf-8"/>
 <main>
