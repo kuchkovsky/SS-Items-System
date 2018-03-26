@@ -55,36 +55,45 @@ public class UserService {
     private void createUser(UserEntity user, String passwordConfirm, HttpServletRequest request)
             throws EmptyFieldsException, UserAlreadyExistsException, PasswordsDontMatchException {
         checkFields(user, passwordConfirm);
-        if (userDao.findByLogin(user.getLogin()) != null) {
-            user.setLogin(null);
-            user.setPassword(null);
-            request.setAttribute(Attributes.USER, new UserDto(user));
-            throw new UserAlreadyExistsException(USER_ALREADY_EXISTS_MESSAGE);
-        }
-        saveUser(user, passwordConfirm, request);
+        checkIfUserExists(user, request);
+        checkPasswordConfirm(user, passwordConfirm, request);
+        saveUser(user);
     }
 
     private void editUser(UserEntity user, String passwordConfirm, HttpServletRequest request)
             throws EmptyFieldsException, PasswordsDontMatchException {
         checkFields(user, passwordConfirm);
-        saveUser(user, passwordConfirm, request);
-    }
-
-    private void saveUser(UserEntity user, String passwordConfirm, HttpServletRequest request)
-            throws PasswordsDontMatchException {
-        if (!user.getPassword().equals(passwordConfirm)) {
-            user.setPassword(null);
-            request.setAttribute(Attributes.USER, new UserDto(user));
-            throw new PasswordsDontMatchException(PASSWORDS_DONT_MATCH_MESSAGE);
-        }
-        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        userDao.save(user);
+        checkPasswordConfirm(user, passwordConfirm, request);
+        saveUser(user);
     }
 
     private void checkFields(UserEntity user, String passwordConfirm) throws EmptyFieldsException {
         if (user.hasEmptyFields() || StringUtils.isEmpty(passwordConfirm)) {
             throw new EmptyFieldsException(EMPTY_USER_FIELDS_MESSAGE);
         }
+    }
+
+    private void checkIfUserExists(UserEntity user, HttpServletRequest request) throws UserAlreadyExistsException {
+        if (userDao.findByLogin(user.getLogin()) != null) {
+            user.setLogin(null);
+            user.setPassword(null);
+            request.setAttribute(Attributes.USER, new UserDto(user));
+            throw new UserAlreadyExistsException(USER_ALREADY_EXISTS_MESSAGE);
+        }
+    }
+
+    private void checkPasswordConfirm(UserEntity user, String passwordConfirm, HttpServletRequest request)
+            throws PasswordsDontMatchException {
+        if (!user.getPassword().equals(passwordConfirm)) {
+            user.setPassword(null);
+            request.setAttribute(Attributes.USER, new UserDto(user));
+            throw new PasswordsDontMatchException(PASSWORDS_DONT_MATCH_MESSAGE);
+        }
+    }
+
+    private void saveUser(UserEntity user) {
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        userDao.save(user);
     }
 
     public UserDto getUser(HttpServletRequest request) {
