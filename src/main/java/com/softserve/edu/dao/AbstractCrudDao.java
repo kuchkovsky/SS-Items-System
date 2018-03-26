@@ -32,18 +32,17 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
 
     @Override
     public List<Entity> findAll() {
+        List<Entity> entities = new ArrayList<>();
         try (Statement statement = connectionManager.getConnection().createStatement()) {
             String query = sqlProperty.get(entityProperty + ".findAll");
             ResultSet resultSet = statement.executeQuery(query);
-            List<Entity> entities = new ArrayList<>();
             while (resultSet.next()) {
                 entities.add(createEntity(resultSet));
             }
-            return entities;
         } catch (SQLException e) {
             logger.error("DAO: findAll error", e);
-            return null;
         }
+        return entities;
     }
 
     @Override
@@ -63,9 +62,9 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
        deleteByField(id, "id");
     }
 
-    protected void deleteByField(Number index, String field) {
+    protected void deleteByField(Number index, String fieldName) {
         String property = sqlProperty.get(entityProperty + ".deleteByField");
-        String query = StringUtils.replace(property, "$field", field);
+        String query = StringUtils.replace(property, "$field", fieldName);
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, index);
             preparedStatement.executeUpdate();
@@ -91,27 +90,23 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
 
     protected Entity findOneByField(Object parameter, String fieldName) {
         List<Entity> entities = findAllByField(parameter, fieldName);
-        if (entities == null || entities.size() == 0) {
-            return null;
-        }
-        return entities.get(0);
+        return entities.size() != 0 ? entities.get(0) : null;
     }
 
     protected List<Entity> findAllByField(Object parameter, String fieldName) {
         String property = sqlProperty.get(entityProperty + ".findByField");
         String query = StringUtils.replace(property, "$field", fieldName);
+        List<Entity> entities = new ArrayList<>();
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, parameter);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Entity> entities = new ArrayList<>();
             while (resultSet.next()) {
                 entities.add(createEntity(resultSet));
             }
-            return entities;
         } catch (SQLException e) {
             logger.error("DAO: findByField error", e);
         }
-        return null;
+        return entities;
     }
 
     protected abstract Entity createEntity(ResultSet resultSet) throws SQLException;
