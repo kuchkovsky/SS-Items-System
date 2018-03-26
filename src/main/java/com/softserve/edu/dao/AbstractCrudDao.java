@@ -1,6 +1,6 @@
 package com.softserve.edu.dao;
 
-import com.softserve.edu.db.ConnectionManager;
+import com.softserve.edu.db.ConnectionPool;
 import com.softserve.edu.entity.IndexedEntity;
 import com.softserve.edu.util.ApplicationContext;
 import com.softserve.edu.util.SqlPropertyReader;
@@ -15,7 +15,6 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
         implements CrudDao<Entity, Index> {
 
     private static final Logger logger = Logger.getLogger(AbstractCrudDao.class);
-    private static final ConnectionManager connectionManager = ConnectionManager.getInstance();
     private static final SqlPropertyReader sqlProperty = ApplicationContext.getInstance().getSqlPropertyReader();
 
     private String entityProperty;
@@ -33,7 +32,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     @Override
     public List<Entity> findAll() {
         List<Entity> entities = new ArrayList<>();
-        try (Statement statement = connectionManager.getConnection().createStatement()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            Statement statement = connection.createStatement();
             String query = sqlProperty.get(entityProperty + ".findAll");
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -49,7 +49,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     public void save(Entity element) {
         String query = (element.getId() == null) ?
                 sqlProperty.get(entityProperty + ".saveNew") : sqlProperty.get(entityProperty + ".save");
-        try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             fillEntity(preparedStatement, element);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -65,7 +66,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     protected void deleteByField(Number index, String fieldName) {
         String property = sqlProperty.get(entityProperty + ".deleteByField");
         String query = StringUtils.replace(property, "$field", fieldName);
-        try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setObject(1, index);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -80,7 +82,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
 
     @Override
     public void deleteAll() {
-        try (Statement statement = connectionManager.getConnection().createStatement()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            Statement statement = connection.createStatement();
             String query = sqlProperty.get(entityProperty + ".deleteAll");
             statement.executeUpdate(query);
         } catch (SQLException e) {
@@ -97,7 +100,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
         String property = sqlProperty.get(entityProperty + ".findByField");
         String query = StringUtils.replace(property, "$field", fieldName);
         List<Entity> entities = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setObject(1, parameter);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -114,7 +118,8 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
     protected abstract List<Object> getEntityParams(Entity entity);
 
     private void createTableIfNotExists() {
-        try (Statement statement = connectionManager.getConnection().createStatement()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            Statement statement = connection.createStatement();
             String query = sqlProperty.get(entityProperty + ".createTableIfNotExists");
             statement.execute(query);
         } catch (SQLException e) {

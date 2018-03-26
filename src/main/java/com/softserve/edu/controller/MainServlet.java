@@ -1,9 +1,7 @@
 package com.softserve.edu.controller;
 
 import com.softserve.edu.constant.PagePaths;
-import com.softserve.edu.db.ConnectionManager;
 import com.softserve.edu.service.LoginService;
-import org.apache.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +12,6 @@ import java.io.IOException;
 @WebServlet(PagePaths.ROOT_SERVLET)
 public class MainServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(MainServlet.class);
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (LoginService.getLoggedUserId(request) != null) {
@@ -23,12 +19,6 @@ public class MainServlet extends HttpServlet {
         } else {
             response.sendRedirect(PagePaths.LOGIN);
         }
-    }
-
-    @Override
-    public void destroy() {
-        logger.info("Closing all JDBC connections...");
-        ConnectionManager.closeAllConnections();
     }
 
 }

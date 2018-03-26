@@ -1,4 +1,12 @@
+# MariaDB/MySQL Setup
 CREATE DATABASE `ss_items_system` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE USER 'ss_items_admin'@'localhost' IDENTIFIED BY '6623b>($38H3V@CKYC=JAS5oA74KjwQ';
 GRANT ALL ON `ss_items_system`.* TO 'ss_items_admin'@'localhost';
 FLUSH PRIVILEGES;
+
+# PostgreSQL Setup
+CREATE DATABASE ss_items_system;
+CREATE USER ss_items_admin WITH PASSWORD '6623b>($38H3V@CKYC=JAS5oA74KjwQ';
+# Don't forget about context, jedi
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ss_items_admin;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO ss_items_admin;
