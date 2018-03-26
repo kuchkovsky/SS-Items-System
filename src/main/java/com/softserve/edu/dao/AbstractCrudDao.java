@@ -89,19 +89,19 @@ abstract public class AbstractCrudDao<Entity extends IndexedEntity<Index>, Index
         }
     }
 
-    protected Entity findOneByField(Object object, String field) {
-        List<Entity> entities = findAllByField(object, field);
-        if (entities.size() == 0) {
+    protected Entity findOneByField(Object parameter, String fieldName) {
+        List<Entity> entities = findAllByField(parameter, fieldName);
+        if (entities == null || entities.size() == 0) {
             return null;
         }
         return entities.get(0);
     }
 
-    protected List<Entity> findAllByField(Object object, String field) {
+    protected List<Entity> findAllByField(Object parameter, String fieldName) {
         String property = sqlProperty.get(entityProperty + ".findByField");
-        String query = StringUtils.replace(property, "$field", field);
+        String query = StringUtils.replace(property, "$field", fieldName);
         try (PreparedStatement preparedStatement = connectionManager.getConnection().prepareStatement(query)) {
-            preparedStatement.setObject(1, object);
+            preparedStatement.setObject(1, parameter);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Entity> entities = new ArrayList<>();
             while (resultSet.next()) {
