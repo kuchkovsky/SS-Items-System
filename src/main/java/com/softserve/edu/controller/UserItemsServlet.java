@@ -9,7 +9,6 @@ import com.softserve.edu.exception.ResourceNotFoundException;
 import com.softserve.edu.service.UserItemsService;
 import com.softserve.edu.util.ApplicationContext;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +25,7 @@ public class UserItemsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute(Attributes.USER_ITEMS, userItemsService.getUserItems(request));
-        RequestDispatcher rd = getServletContext().getRequestDispatcher(JspPaths.USER_ITEMS);
-        rd.forward(request, response);
+        request.getRequestDispatcher(JspPaths.USER_ITEMS).forward(request, response);
     }
 
     @Override

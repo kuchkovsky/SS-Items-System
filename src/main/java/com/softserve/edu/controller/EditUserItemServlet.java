@@ -26,10 +26,10 @@ public class EditUserItemServlet extends HttpServlet {
         request.setAttribute(Attributes.PAGE_TITLE, AttributeValues.EDIT_ITEM_PAGE);
         try {
             request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromUrlParameter(request));
-            getServletContext().getRequestDispatcher(JspPaths.EDIT_USER_ITEM).forward(request, response);
+            request.getRequestDispatcher(JspPaths.EDIT_USER_ITEM).forward(request, response);
         } catch (ServiceException e) {
             request.setAttribute(Attributes.ERROR, e);
-            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         }
     }
 
@@ -41,7 +41,7 @@ public class EditUserItemServlet extends HttpServlet {
             response.sendRedirect(PagePaths.USER_ITEMS);
         } catch (ServiceException e) {
             request.setAttribute(Attributes.ERROR, e);
-            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         }
     }
 

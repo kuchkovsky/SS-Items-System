@@ -26,7 +26,7 @@ public class SignupServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute(Attributes.PAGE_TITLE, AttributeValues.SIGN_UP_PAGE);
-        getServletContext().getRequestDispatcher(JspPaths.USER_ACCOUNT).forward(request, response);
+        request.getRequestDispatcher(JspPaths.USER_ACCOUNT).forward(request, response);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SignupServlet extends HttpServlet {
             response.sendRedirect(PagePaths.USER_ITEMS);
         } catch (EmptyFieldsException e) {
             request.setAttribute(Attributes.ERROR, e);
-            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         } catch (UserAlreadyExistsException | PasswordsDontMatchException e) {
             request.setAttribute(Attributes.ERROR, e);
             doGet(request, response);

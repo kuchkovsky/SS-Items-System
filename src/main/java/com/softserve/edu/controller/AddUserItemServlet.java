@@ -24,7 +24,7 @@ public class AddUserItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute(Attributes.PAGE_TITLE, AttributeValues.ADD_ITEM_PAGE);
-        getServletContext().getRequestDispatcher(JspPaths.EDIT_USER_ITEM).forward(request, response);
+        request.getRequestDispatcher(JspPaths.EDIT_USER_ITEM).forward(request, response);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AddUserItemServlet extends HttpServlet {
             response.sendRedirect(PagePaths.USER_ITEMS);
         } catch (EmptyFieldsException e) {
             request.setAttribute(Attributes.ERROR, e);
-            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         }
     }
 

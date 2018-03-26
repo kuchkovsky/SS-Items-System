@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getServletContext().getRequestDispatcher(JspPaths.LOGIN).forward(request, response);
+        request.getRequestDispatcher(JspPaths.LOGIN).forward(request, response);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect(PagePaths.USER_ITEMS);
         } catch (EmptyFieldsException e) {
             request.setAttribute(Attributes.ERROR, e);
-            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         } catch (FailedLoginException e) {
             request.setAttribute(Attributes.ERROR, e);
             request.getRequestDispatcher(JspPaths.LOGIN).forward(request, response);

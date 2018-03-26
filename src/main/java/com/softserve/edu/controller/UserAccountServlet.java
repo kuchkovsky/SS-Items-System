@@ -28,7 +28,7 @@ public class UserAccountServlet extends HttpServlet {
             request.setAttribute(Attributes.USER, userService.getUser(request));
         }
         request.setAttribute(Attributes.PAGE_TITLE, AttributeValues.ACCOUNT_PAGE);
-        getServletContext().getRequestDispatcher(JspPaths.USER_ACCOUNT).forward(request, response);
+        request.getRequestDispatcher(JspPaths.USER_ACCOUNT).forward(request, response);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserAccountServlet extends HttpServlet {
             response.sendRedirect(PagePaths.USER_ITEMS);
         } catch (EmptyFieldsException e) {
             request.setAttribute(Attributes.ERROR, e);
-            getServletContext().getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
         } catch (PasswordsDontMatchException e) {
             request.setAttribute(Attributes.ERROR, e);
             doGet(request, response);
