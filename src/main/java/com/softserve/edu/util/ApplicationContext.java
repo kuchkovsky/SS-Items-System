@@ -12,7 +12,6 @@ public class ApplicationContext {
 
     private static volatile ApplicationContext instance;
 
-    private JdbcPropertyReader jdbcPropertyReader;
     private SqlPropertyReader sqlPropertyReader;
     private UserDao userDao;
     private UserItemDao userItemDao;
@@ -35,17 +34,12 @@ public class ApplicationContext {
     }
 
     private void initComponents() {
-        jdbcPropertyReader = new JdbcPropertyReader();
         sqlPropertyReader = new SqlPropertyReader();
         userDao = new UserDaoImpl();
         userItemDao = new UserItemDaoImpl();
         userService = new UserService(userDao);
         userItemsService = new UserItemsService(userItemDao);
         loginService = new LoginService(userDao);
-    }
-
-    public JdbcPropertyReader getJdbcPropertyReader() {
-        return jdbcPropertyReader;
     }
 
     public SqlPropertyReader getSqlPropertyReader() {
