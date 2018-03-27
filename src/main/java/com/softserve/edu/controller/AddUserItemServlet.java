@@ -1,9 +1,9 @@
 package com.softserve.edu.controller;
 
-import com.softserve.edu.constant.AttributeValues;
-import com.softserve.edu.constant.Attributes;
-import com.softserve.edu.constant.JspPaths;
-import com.softserve.edu.constant.PagePaths;
+import com.softserve.edu.constants.AttributeValues;
+import com.softserve.edu.constants.Attributes;
+import com.softserve.edu.constants.JspPaths;
+import com.softserve.edu.constants.PagePaths;
 import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.service.UserItemsService;
 import com.softserve.edu.util.ApplicationContext;

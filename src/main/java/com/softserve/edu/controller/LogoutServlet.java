@@ -1,6 +1,6 @@
 package com.softserve.edu.controller;
 
-import com.softserve.edu.constant.PagePaths;
+import com.softserve.edu.constants.PagePaths;
 import com.softserve.edu.service.LoginService;
 
 import javax.servlet.annotation.WebServlet;

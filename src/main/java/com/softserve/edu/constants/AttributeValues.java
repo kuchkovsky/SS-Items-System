@@ -1,4 +1,4 @@
-package com.softserve.edu.constant;
+package com.softserve.edu.constants;
 
 public class AttributeValues {
 

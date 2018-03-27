@@ -1,6 +1,6 @@
 package com.softserve.edu.filter;
 
-import com.softserve.edu.constant.PagePaths;
+import com.softserve.edu.constants.PagePaths;
 import org.apache.log4j.Logger;
 
 import javax.servlet.FilterChain;

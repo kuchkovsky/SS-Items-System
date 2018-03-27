@@ -1,7 +1,7 @@
 package com.softserve.edu.service;
 
-import com.softserve.edu.constant.Attributes;
-import com.softserve.edu.constant.FormParameters;
+import com.softserve.edu.constants.Attributes;
+import com.softserve.edu.constants.FormParameters;
 import com.softserve.edu.dao.UserDao;
 import com.softserve.edu.entity.UserEntity;
 import com.softserve.edu.exception.EmptyFieldsException;

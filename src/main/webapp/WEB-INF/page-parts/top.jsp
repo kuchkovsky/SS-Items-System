@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.softserve.edu.constant.PagePaths" %>
+<%@ page import="com.softserve.edu.constants.PagePaths" %>
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,7 +1,7 @@
 package com.softserve.edu.filter;
 
-import com.softserve.edu.constant.Attributes;
-import com.softserve.edu.constant.PagePaths;
+import com.softserve.edu.constants.Attributes;
+import com.softserve.edu.constants.PagePaths;
 import com.softserve.edu.service.UserService;
 import com.softserve.edu.util.ApplicationContext;
 

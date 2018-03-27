@@ -1,7 +1,7 @@
 package com.softserve.edu.service;
 
-import com.softserve.edu.constant.FormParameters;
-import com.softserve.edu.constant.UrlParameters;
+import com.softserve.edu.constants.FormParameters;
+import com.softserve.edu.constants.UrlParameters;
 import com.softserve.edu.dao.UserItemDao;
 import com.softserve.edu.dto.UserItemDto;
 import com.softserve.edu.entity.UserItemEntity;

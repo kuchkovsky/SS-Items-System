@@ -1,8 +1,8 @@
 package com.softserve.edu.controller;
 
-import com.softserve.edu.constant.Attributes;
-import com.softserve.edu.constant.JspPaths;
-import com.softserve.edu.constant.PagePaths;
+import com.softserve.edu.constants.Attributes;
+import com.softserve.edu.constants.JspPaths;
+import com.softserve.edu.constants.PagePaths;
 import com.softserve.edu.exception.AccessViolationException;
 import com.softserve.edu.exception.IncorrectParametersException;
 import com.softserve.edu.exception.ResourceNotFoundException;
