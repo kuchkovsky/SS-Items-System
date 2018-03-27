@@ -25,10 +25,14 @@ public class PropertyReader {
 
 
     public String get(String name) {
-        if (!properties.containsKey(name)) {
+        if (!containsKey(name)) {
             throw new PropertyNotFoundException("Could not find property by key: " + name);
         }
         return properties.getProperty(name);
+    }
+
+    public boolean containsKey(String name) {
+        return properties.containsKey(name);
     }
 
 }
