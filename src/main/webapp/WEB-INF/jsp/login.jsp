@@ -7,20 +7,20 @@
 <main>
     <div class="section">
         <div class="form-block center-block">
-            <form action="${PagePaths.LOGIN}" class="col" method="post">
+            <form action="${PagePathConstants.LOGIN}" class="col" method="post">
                 <c:if test="${not empty error}">
                     <div id="error-block" class="center">
                         <span>${error.message}</span>
                     </div>
                 </c:if>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.LOGIN}" id="${FormParameters.LOGIN}" type="text" class="validate" required>
-                    <label for="${FormParameters.LOGIN}">Login</label>
+                    <input name="${FormParameterConstants.LOGIN}" id="${FormParameterConstants.LOGIN}" type="text" class="validate" required>
+                    <label for="${FormParameterConstants.LOGIN}">Login</label>
                 </div>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.PASSWORD}" id="${FormParameters.PASSWORD}" type="password"
+                    <input name="${FormParameterConstants.PASSWORD}" id="${FormParameterConstants.PASSWORD}" type="password"
                            class="validate" required>
-                    <label for="${FormParameters.PASSWORD}">Password</label>
+                    <label for="${FormParameterConstants.PASSWORD}">Password</label>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit" name="submit">Submit
                     <i class="material-icons right">send</i>
@@ -30,7 +30,7 @@
             <br>
             <h5 class="center">Don't Have an Account?</h5>
             <br>
-            <a href="${PagePaths.SIGNUP}" class="btn waves-effect waves-light">Sign Up</a>
+            <a href="${PagePathConstants.SIGNUP}" class="btn waves-effect waves-light">Sign Up</a>
         </div>
     </div>
 </main>

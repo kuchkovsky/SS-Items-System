@@ -7,7 +7,7 @@
 <main>
     <div class="section">
         <div class="form-block center-block">
-            <form action="${pageTitle == AttributeValues.ACCOUNT_PAGE ? PagePaths.USER_ACCOUNT : PagePaths.SIGNUP}"
+            <form action="${pageTitle == AttributeValueConstants.ACCOUNT_PAGE ? PagePathConstants.USER_ACCOUNT : PagePathConstants.SIGNUP}"
                   class="col" method="post">
                 <c:if test="${not empty error}">
                     <div id="error-block" class="center">
@@ -15,30 +15,30 @@
                     </div>
                 </c:if>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.FIRST_NAME}" id="${FormParameters.FIRST_NAME}" type="text"
+                    <input name="${FormParameterConstants.FIRST_NAME}" id="${FormParameterConstants.FIRST_NAME}" type="text"
                            class="validate" value="${user.firstName}" required>
-                    <label for="${FormParameters.FIRST_NAME}">First Name</label>
+                    <label for="${FormParameterConstants.FIRST_NAME}">First Name</label>
                 </div>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.LAST_NAME}" id="${FormParameters.LAST_NAME}" type="text"
+                    <input name="${FormParameterConstants.LAST_NAME}" id="${FormParameterConstants.LAST_NAME}" type="text"
                            class="validate" value="${user.lastName}" required>
-                    <label for="${FormParameters.LAST_NAME}">Last Name</label>
+                    <label for="${FormParameterConstants.LAST_NAME}">Last Name</label>
                 </div>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.LOGIN}" id="${FormParameters.LOGIN}" type="text"
+                    <input name="${FormParameterConstants.LOGIN}" id="${FormParameterConstants.LOGIN}" type="text"
                            class="validate" value="${user.login}"
-                        <c:if test="${pageTitle == AttributeValues.ACCOUNT_PAGE}">disabled</c:if> required>
-                    <label for="${FormParameters.LOGIN}">Login</label>
+                        <c:if test="${pageTitle == AttributeValueConstants.ACCOUNT_PAGE}">disabled</c:if> required>
+                    <label for="${FormParameterConstants.LOGIN}">Login</label>
                 </div>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.PASSWORD}" id="${FormParameters.PASSWORD}" type="password"
+                    <input name="${FormParameterConstants.PASSWORD}" id="${FormParameterConstants.PASSWORD}" type="password"
                            class="validate" required>
-                    <label for="${FormParameters.PASSWORD}">Password</label>
+                    <label for="${FormParameterConstants.PASSWORD}">Password</label>
                 </div>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.PASSWORD_CONFIRM}" id="${FormParameters.PASSWORD_CONFIRM}"
+                    <input name="${FormParameterConstants.PASSWORD_CONFIRM}" id="${FormParameterConstants.PASSWORD_CONFIRM}"
                            type="password" class="validate" required>
-                    <label for="${FormParameters.PASSWORD_CONFIRM}">Confirm Password</label>
+                    <label for="${FormParameterConstants.PASSWORD_CONFIRM}">Confirm Password</label>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit" name="submit">Submit
                     <i class="material-icons right">send</i>

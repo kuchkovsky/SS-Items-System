@@ -6,19 +6,19 @@
 <main>
     <div class="section">
         <div class="form-block center-block">
-            <form action="${empty userItem ? PagePaths.ADD_USER_ITEM : PagePaths.EDIT_USER_ITEM}" class="col" method="post">
+            <form action="${empty userItem ? PagePathConstants.ADD_USER_ITEM : PagePathConstants.EDIT_USER_ITEM}" class="col" method="post">
                 <c:if test="${not empty userItem}">
-                    <input type="hidden" name="${FormParameters.ID}" value="${userItem.id}" />
+                    <input type="hidden" name="${FormParameterConstants.ID}" value="${userItem.id}" />
                 </c:if>
                 <div class="input-field col s12">
-                    <input name="${FormParameters.TITLE}" id="${FormParameters.TITLE}" type="text"
+                    <input name="${FormParameterConstants.TITLE}" id="${FormParameterConstants.TITLE}" type="text"
                            class="validate" value="${userItem.title}" required>
-                    <label for="${FormParameters.TITLE}">Title</label>
+                    <label for="${FormParameterConstants.TITLE}">Title</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea name="${FormParameters.DESCRIPTION}" id="${FormParameters.DESCRIPTION}"
+                    <textarea name="${FormParameterConstants.DESCRIPTION}" id="${FormParameterConstants.DESCRIPTION}"
                               class="materialize-textarea" required>${userItem.description}</textarea>
-                    <label for="${FormParameters.DESCRIPTION}">Description</label>
+                    <label for="${FormParameterConstants.DESCRIPTION}">Description</label>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit" name="submit">Submit
                     <i class="material-icons right">send</i>

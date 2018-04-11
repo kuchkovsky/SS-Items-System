@@ -8,7 +8,7 @@
         <div class="center">
             <h5>${error.message}</h5>
             <br>
-            <a href="${PagePaths.ROOT}" class="btn waves-effect waves-light center">Go to Main Page</a>
+            <a href="${PagePathConstants.ROOT}" class="btn waves-effect waves-light center">Go to Main Page</a>
         </div>
     </div>
 </main>

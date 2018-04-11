@@ -12,7 +12,7 @@
                 <div class="collection">
                     <c:forEach items="${userItems}" var="item">
                         <div class="collection-item avatar">
-                            <a href="${PagePaths.USER_ITEMS += '/' += item.id}">
+                            <a href="${PagePathConstants.USER_ITEMS += '/' += item.id}">
                                 <img src="/img/ic_star_black_48px.svg" alt="" class="circle">
                                 <span class="title">
                                         ${fn:length(item.title) < 25 ?
@@ -24,7 +24,7 @@
                                 </p>
                             </a>
                             <div class="list-buttons">
-                                <a href="${PagePaths.EDIT_USER_ITEM}?${UrlParameters.ID}=${item.id}"
+                                <a href="${PagePathConstants.EDIT_USER_ITEM}?${UrlParameterConstants.ID}=${item.id}"
                                    class="btn waves-effect waves-light edit-button">Edit</a>
                                 <button class="btn waves-effect waves-light delete-button modal-trigger"
                                         data-target="confirmation-dialog" data-id="${item.id}">Delete</button>
@@ -61,7 +61,7 @@
         </div>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red" href="${PagePaths.ADD_USER_ITEM}">
+        <a class="btn-floating btn-large red" href="${PagePathConstants.ADD_USER_ITEM}">
             <i class="large material-icons">mode_edit</i>
         </a>
     </div>
