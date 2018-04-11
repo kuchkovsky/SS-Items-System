@@ -1,6 +1,6 @@
 package com.softserve.edu.constants;
 
-public class Attributes {
+public final class AttributeConstants {
 
     public static final String PAGE_TITLE = "pageTitle";
     public static final String ERROR = "error";
@@ -9,5 +9,8 @@ public class Attributes {
     public static final String USER_ITEM = "userItem";
     public static final String USER_ITEMS = "userItems";
     public static final String FULL_USER_NAME = "fullUserName";
+
+    private AttributeConstants() {
+    }
 
 }

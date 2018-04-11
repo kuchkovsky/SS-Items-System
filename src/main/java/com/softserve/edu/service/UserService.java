@@ -1,7 +1,7 @@
 package com.softserve.edu.service;
 
-import com.softserve.edu.constants.Attributes;
-import com.softserve.edu.constants.FormParameters;
+import com.softserve.edu.constants.AttributeConstants;
+import com.softserve.edu.constants.FormParameterConstants;
 import com.softserve.edu.dao.UserDao;
 import com.softserve.edu.dto.UserDto;
 import com.softserve.edu.entity.UserEntity;
@@ -28,12 +28,12 @@ public class UserService {
 
     public void createUser(HttpServletRequest request)
             throws EmptyFieldsException, UserAlreadyExistsException, PasswordsDontMatchException {
-        String passwordConfirm = request.getParameter(FormParameters.PASSWORD_CONFIRM);
+        String passwordConfirm = request.getParameter(FormParameterConstants.PASSWORD_CONFIRM);
         createUser(getUserEntityFromRequest(request, false), passwordConfirm, request);
     }
 
     public void editUser(HttpServletRequest request) throws EmptyFieldsException, PasswordsDontMatchException {
-        String passwordConfirm = request.getParameter(FormParameters.PASSWORD_CONFIRM);
+        String passwordConfirm = request.getParameter(FormParameterConstants.PASSWORD_CONFIRM);
         editUser(getUserEntityFromRequest(request, true), passwordConfirm, request);
     }
 
@@ -44,11 +44,11 @@ public class UserService {
             id = LoginService.getLoggedUserId(request);
             login = userDao.findById(id).getLogin();
         } else {
-            login = request.getParameter(FormParameters.LOGIN);
+            login = request.getParameter(FormParameterConstants.LOGIN);
         }
-        String password = request.getParameter(FormParameters.PASSWORD);
-        String firstName = request.getParameter(FormParameters.FIRST_NAME);
-        String lastName = request.getParameter(FormParameters.LAST_NAME);
+        String password = request.getParameter(FormParameterConstants.PASSWORD);
+        String firstName = request.getParameter(FormParameterConstants.FIRST_NAME);
+        String lastName = request.getParameter(FormParameterConstants.LAST_NAME);
         return new UserEntity(id, login, password, firstName, lastName);
     }
 
@@ -77,7 +77,7 @@ public class UserService {
         if (userDao.findByLogin(user.getLogin()) != null) {
             user.setLogin(null);
             user.setPassword(null);
-            request.setAttribute(Attributes.USER, new UserDto(user));
+            request.setAttribute(AttributeConstants.USER, new UserDto(user));
             throw new UserAlreadyExistsException(USER_ALREADY_EXISTS_MESSAGE);
         }
     }
@@ -86,7 +86,7 @@ public class UserService {
             throws PasswordsDontMatchException {
         if (!user.getPassword().equals(passwordConfirm)) {
             user.setPassword(null);
-            request.setAttribute(Attributes.USER, new UserDto(user));
+            request.setAttribute(AttributeConstants.USER, new UserDto(user));
             throw new PasswordsDontMatchException(PASSWORDS_DONT_MATCH_MESSAGE);
         }
     }

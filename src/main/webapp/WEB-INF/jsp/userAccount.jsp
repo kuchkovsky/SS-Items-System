@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.softserve.edu.constants.PagePaths" %>
-<%@ page import="com.softserve.edu.constants.FormParameters" %>
-<%@ page import="com.softserve.edu.constants.AttributeValues" %>
+<%@ page import="com.softserve.edu.constants.PagePathConstants" %>
+<%@ page import="com.softserve.edu.constants.FormParameterConstants" %>
+<%@ page import="com.softserve.edu.constants.AttributeValueConstants" %>
 <c:import url="/WEB-INF/page-parts/top.jsp" charEncoding="utf-8"/>
 <main>
     <div class="section">

@@ -1,9 +1,9 @@
 package com.softserve.edu.controller;
 
-import com.softserve.edu.constants.AttributeValues;
-import com.softserve.edu.constants.Attributes;
-import com.softserve.edu.constants.JspPaths;
-import com.softserve.edu.constants.PagePaths;
+import com.softserve.edu.constants.AttributeValueConstants;
+import com.softserve.edu.constants.AttributeConstants;
+import com.softserve.edu.constants.JspPathConstants;
+import com.softserve.edu.constants.PagePathConstants;
 import com.softserve.edu.exception.EmptyFieldsException;
 import com.softserve.edu.exception.PasswordsDontMatchException;
 import com.softserve.edu.service.UserService;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(PagePaths.USER_ACCOUNT)
+@WebServlet(PagePathConstants.USER_ACCOUNT)
 public class UserAccountServlet extends HttpServlet {
 
     private static final UserService userService = ApplicationContext.getInstance().getUserService();
@@ -24,11 +24,11 @@ public class UserAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getAttribute(Attributes.USER) == null) {
-            request.setAttribute(Attributes.USER, userService.getUser(request));
+        if (request.getAttribute(AttributeConstants.USER) == null) {
+            request.setAttribute(AttributeConstants.USER, userService.getUser(request));
         }
-        request.setAttribute(Attributes.PAGE_TITLE, AttributeValues.ACCOUNT_PAGE);
-        request.getRequestDispatcher(JspPaths.USER_ACCOUNT).forward(request, response);
+        request.setAttribute(AttributeConstants.PAGE_TITLE, AttributeValueConstants.ACCOUNT_PAGE);
+        request.getRequestDispatcher(JspPathConstants.USER_ACCOUNT).forward(request, response);
     }
 
     @Override
@@ -36,12 +36,12 @@ public class UserAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             userService.editUser(request);
-            response.sendRedirect(PagePaths.USER_ITEMS);
+            response.sendRedirect(PagePathConstants.USER_ITEMS);
         } catch (EmptyFieldsException e) {
-            request.setAttribute(Attributes.ERROR, e);
-            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.setAttribute(AttributeConstants.ERROR, e);
+            request.getRequestDispatcher(JspPathConstants.ERROR).forward(request, response);
         } catch (PasswordsDontMatchException e) {
-            request.setAttribute(Attributes.ERROR, e);
+            request.setAttribute(AttributeConstants.ERROR, e);
             doGet(request, response);
         }
     }

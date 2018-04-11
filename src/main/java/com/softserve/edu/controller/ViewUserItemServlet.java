@@ -1,8 +1,8 @@
 package com.softserve.edu.controller;
 
-import com.softserve.edu.constants.Attributes;
-import com.softserve.edu.constants.JspPaths;
-import com.softserve.edu.constants.PagePaths;
+import com.softserve.edu.constants.AttributeConstants;
+import com.softserve.edu.constants.JspPathConstants;
+import com.softserve.edu.constants.PagePathConstants;
 import com.softserve.edu.exception.AccessViolationException;
 import com.softserve.edu.exception.IncorrectParametersException;
 import com.softserve.edu.exception.ResourceNotFoundException;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(PagePaths.VIEW_USER_ITEM)
+@WebServlet(PagePathConstants.VIEW_USER_ITEM)
 public class ViewUserItemServlet extends HttpServlet {
 
     private static final UserItemsService userItemsService = ApplicationContext.getInstance().getUserItemsService();
@@ -25,11 +25,11 @@ public class ViewUserItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            request.setAttribute(Attributes.USER_ITEM, userItemsService.getUserItemFromUrl(request));
-            request.getRequestDispatcher(JspPaths.VIEW_USER_ITEM).forward(request, response);
+            request.setAttribute(AttributeConstants.USER_ITEM, userItemsService.getUserItemFromUrl(request));
+            request.getRequestDispatcher(JspPathConstants.VIEW_USER_ITEM).forward(request, response);
         } catch (IncorrectParametersException | ResourceNotFoundException | AccessViolationException e) {
-            request.setAttribute(Attributes.ERROR, e);
-            request.getRequestDispatcher(JspPaths.ERROR).forward(request, response);
+            request.setAttribute(AttributeConstants.ERROR, e);
+            request.getRequestDispatcher(JspPathConstants.ERROR).forward(request, response);
         }
     }
 

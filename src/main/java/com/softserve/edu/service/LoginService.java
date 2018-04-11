@@ -1,7 +1,7 @@
 package com.softserve.edu.service;
 
-import com.softserve.edu.constants.Attributes;
-import com.softserve.edu.constants.FormParameters;
+import com.softserve.edu.constants.AttributeConstants;
+import com.softserve.edu.constants.FormParameterConstants;
 import com.softserve.edu.dao.UserDao;
 import com.softserve.edu.entity.UserEntity;
 import com.softserve.edu.exception.EmptyFieldsException;
@@ -26,8 +26,8 @@ public class LoginService {
     }
 
     public void loginUser(HttpServletRequest request) throws EmptyFieldsException, FailedLoginException {
-        String login = request.getParameter(FormParameters.LOGIN);
-        String password = request.getParameter(FormParameters.PASSWORD);
+        String login = request.getParameter(FormParameterConstants.LOGIN);
+        String password = request.getParameter(FormParameterConstants.PASSWORD);
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(password)) {
             throw new EmptyFieldsException(EMPTY_LOGIN_FIELDS_MESSAGE);
         }
@@ -38,7 +38,7 @@ public class LoginService {
         logout(request);
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(SESSION_TIMEOUT_IN_DAYS * 24 * 60 * 60);
-        session.setAttribute(Attributes.USER_ID, user.getId());
+        session.setAttribute(AttributeConstants.USER_ID, user.getId());
     }
 
     public static Long getLoggedUserId(HttpServletRequest request) {
@@ -46,7 +46,7 @@ public class LoginService {
         if (session == null) {
             return null;
         }
-        return (Long) session.getAttribute(Attributes.USER_ID);
+        return (Long) session.getAttribute(AttributeConstants.USER_ID);
     }
 
     public static void logout(HttpServletRequest request) {

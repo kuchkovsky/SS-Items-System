@@ -1,7 +1,7 @@
 package com.softserve.edu.filter;
 
-import com.softserve.edu.constants.Attributes;
-import com.softserve.edu.constants.PagePaths;
+import com.softserve.edu.constants.AttributeConstants;
+import com.softserve.edu.constants.PagePathConstants;
 import com.softserve.edu.service.UserService;
 import com.softserve.edu.util.ApplicationContext;
 
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(PagePaths.USER_PAGES)
+@WebFilter(PagePathConstants.USER_PAGES)
 public class AuthenticationFilter extends HttpFilter {
 
     private static final UserService userService = ApplicationContext.getInstance().getUserService();
@@ -23,12 +23,12 @@ public class AuthenticationFilter extends HttpFilter {
             throws IOException, ServletException {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            response.sendRedirect(PagePaths.LOGIN);
-        } else if (session.getAttribute(Attributes.USER_ID) == null) {
+            response.sendRedirect(PagePathConstants.LOGIN);
+        } else if (session.getAttribute(AttributeConstants.USER_ID) == null) {
             session.invalidate();
-            response.sendRedirect(PagePaths.LOGIN);
+            response.sendRedirect(PagePathConstants.LOGIN);
         } else {
-            request.setAttribute(Attributes.FULL_USER_NAME, userService.getFullUserName(request));
+            request.setAttribute(AttributeConstants.FULL_USER_NAME, userService.getFullUserName(request));
             chain.doFilter(request, response);
         }
     }

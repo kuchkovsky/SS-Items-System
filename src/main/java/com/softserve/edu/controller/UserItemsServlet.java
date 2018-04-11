@@ -1,8 +1,8 @@
 package com.softserve.edu.controller;
 
-import com.softserve.edu.constants.Attributes;
-import com.softserve.edu.constants.JspPaths;
-import com.softserve.edu.constants.PagePaths;
+import com.softserve.edu.constants.AttributeConstants;
+import com.softserve.edu.constants.JspPathConstants;
+import com.softserve.edu.constants.PagePathConstants;
 import com.softserve.edu.exception.AccessViolationException;
 import com.softserve.edu.exception.IncorrectParametersException;
 import com.softserve.edu.exception.ResourceNotFoundException;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(PagePaths.USER_ITEMS)
+@WebServlet(PagePathConstants.USER_ITEMS)
 public class UserItemsServlet extends HttpServlet {
 
     private static final UserItemsService userItemsService = ApplicationContext.getInstance().getUserItemsService();
@@ -24,8 +24,8 @@ public class UserItemsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute(Attributes.USER_ITEMS, userItemsService.getUserItems(request));
-        request.getRequestDispatcher(JspPaths.USER_ITEMS).forward(request, response);
+        request.setAttribute(AttributeConstants.USER_ITEMS, userItemsService.getUserItems(request));
+        request.getRequestDispatcher(JspPathConstants.USER_ITEMS).forward(request, response);
     }
 
     @Override

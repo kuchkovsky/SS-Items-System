@@ -1,7 +1,7 @@
 package com.softserve.edu.service;
 
-import com.softserve.edu.constants.FormParameters;
-import com.softserve.edu.constants.UrlParameters;
+import com.softserve.edu.constants.FormParameterConstants;
+import com.softserve.edu.constants.UrlParameterConstants;
 import com.softserve.edu.dao.UserItemDao;
 import com.softserve.edu.dto.UserItemDto;
 import com.softserve.edu.entity.UserItemEntity;
@@ -37,7 +37,7 @@ public class UserItemsService {
 
     public UserItemDto getUserItemFromUrlParameter(HttpServletRequest request)
             throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException {
-        Long id = verifyAndGetUserItemId(request.getParameter(UrlParameters.ID), LoginService.getLoggedUserId(request));
+        Long id = verifyAndGetUserItemId(request.getParameter(UrlParameterConstants.ID), LoginService.getLoggedUserId(request));
         return new UserItemDto(userItemDao.findById(id));
     }
 
@@ -54,13 +54,13 @@ public class UserItemsService {
 
     public void editUserItem(HttpServletRequest request)
             throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException, EmptyFieldsException {
-        Long id = verifyAndGetUserItemId(request.getParameter(FormParameters.ID), LoginService.getLoggedUserId(request));
+        Long id = verifyAndGetUserItemId(request.getParameter(FormParameterConstants.ID), LoginService.getLoggedUserId(request));
         saveUserItem(id, request);
     }
 
     public void deleteUserItem(HttpServletRequest request)
             throws IncorrectParametersException, ResourceNotFoundException, AccessViolationException {
-        Long id = verifyAndGetUserItemId(request.getParameter(UrlParameters.ID), LoginService.getLoggedUserId(request));
+        Long id = verifyAndGetUserItemId(request.getParameter(UrlParameterConstants.ID), LoginService.getLoggedUserId(request));
         userItemDao.deleteById(id);
     }
 
@@ -84,8 +84,8 @@ public class UserItemsService {
 
     private void saveUserItem(Long userItemId, HttpServletRequest request)
             throws EmptyFieldsException {
-        String title = request.getParameter(FormParameters.TITLE);
-        String description = request.getParameter(FormParameters.DESCRIPTION);
+        String title = request.getParameter(FormParameterConstants.TITLE);
+        String description = request.getParameter(FormParameterConstants.DESCRIPTION);
         if (StringUtils.isEmpty(title) || StringUtils.isEmpty(title)) {
             throw new EmptyFieldsException(EMPTY_ITEM_FIELDS_MESSAGE);
         }

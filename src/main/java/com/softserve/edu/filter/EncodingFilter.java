@@ -1,6 +1,6 @@
 package com.softserve.edu.filter;
 
-import com.softserve.edu.constants.PagePaths;
+import com.softserve.edu.constants.PagePathConstants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.FilterChain;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-@WebFilter(PagePaths.ALL_PAGES)
+@WebFilter(PagePathConstants.ALL_PAGES)
 public class EncodingFilter extends HttpFilter {
 
     private static final Logger logger = Logger.getLogger(EncodingFilter.class);
